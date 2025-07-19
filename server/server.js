@@ -23,7 +23,7 @@ app.post('/razorpay/webhook', express.raw({ type: 'application/json' }), razorpa
 // ✅ CORS setup
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://green-cart-sustainable-grocery-shop-two.vercel.app'
+  ''
 ];
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
