@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Inter:wght@400;600;700&family=Manrope:wght@400;600;800&family=Poppins:wght@300;500;700&display=swap');
+@import "tailwindcss";
+
+/* ✅ Global font family */
+* {
+  font-family: "Outfit", "Inter", "Manrope", "Poppins", sans-serif;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Extended theme colors */
+@theme {
+  --color-primary: #4fbf8b;
+  --color-primary-dull: #44ae7c;
+  --color-accent: #f3f4f6;
+  --color-dark: #1f2937;
+  --color-light: #ffffff;
+  --color-gray-soft: #e5e7eb;
+  --color-background: linear-gradient(to bottom right, #fdfdfd, #f2f7ff, #e7f5f3);
+  --color-card-glow: rgba(255, 255, 255, 0.15);
+}
+
+/* ✅ Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ✅ Global transitions */
+.transition-fast {
+  transition: all 0.25s ease-in-out;
+}
+.transition-smooth {
+  transition: all 0.4s ease;
+}
+.transition-ease-in {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ✅ Glassmorphism style */
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ Shadows */
+.shadow-subtle {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+.shadow-medium {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+.shadow-glow {
+  box-shadow: 0 0 18px rgba(79, 191, 139, 0.3);
+}
+.shadow-card {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.07);
+}
+
+/* ✅ Hover animation */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+.hover-scale:hover {
+  transform: scale(1.07);
+}
+.hover-pop:hover {
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ Button styles */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 0.75rem;
+  padding: 0.65rem 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(79, 191, 139, 0.35);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-dull);
+  box-shadow: 0 6px 20px rgba(68, 174, 124, 0.4);
+}
+
+/* ✅ Responsive padding container */
+.container-padded {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 768px) {
+  .container-padded {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+@media (min-width: 1024px) {
+  .container-padded {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+/* ✅ Frosted nav or footer */
+.backdrop-glow {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ✅ Headings & UI text */
+.text-heading {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-dark);
+  letter-spacing: -0.5px;
+}
+.text-subheading {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* ✅ Border & rounded utilities */
+.card-rounded {
+  border-radius: 1rem;
+  border: 1px solid var(--color-gray-soft);
+}
+
+/* ✅ Animations */
+.fade-in {
+  animation: fadeIn 0.6s ease-in forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease forwards;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scale-fade {
+  animation: scaleFade 0.4s ease-in-out forwards;
+}
+@keyframes scaleFade {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
