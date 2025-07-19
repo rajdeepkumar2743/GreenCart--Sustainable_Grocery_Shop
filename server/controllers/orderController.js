@@ -133,10 +133,16 @@ export const razorpayWebhooks = async (req, res) => {
     return res.status(400).send("Invalid signature");
   }
 
-  if (body.event === "payment.captured") {
-    try {
-      const orderId = body.payload.payment.entity.notes.orderId;
-      const userId = body.payload.payment.entity.notes.userId;
+  const event = body.event;
+
+  try {
+    if (event === "payment.captured" || event === "order.paid") {
+      const paymentData = event === "payment.captured"
+        ? body.payload.payment.entity
+        : body.payload.order.entity;
+
+      const orderId = paymentData.notes?.orderId;
+      const userId = paymentData.notes?.userId;
 
       const order = await Order.findByIdAndUpdate(orderId, { isPaid: true }, { new: true });
       await User.findByIdAndUpdate(userId, { cartItems: {} });
@@ -158,13 +164,39 @@ export const razorpayWebhooks = async (req, res) => {
           orderDate
         ),
       });
-    } catch (err) {
-      console.error("❌ Error in Razorpay webhook logic:", err.message);
+
+    } else if (event === "payment.failed") {
+      const payment = body.payload.payment.entity;
+      const orderId = payment.notes?.orderId;
+      const userId = payment.notes?.userId;
+
+      await Order.findByIdAndUpdate(orderId, { orderStatus: "Payment Failed" });
+
+      console.warn(`❌ Payment failed for order ${orderId}: ${payment.error_description}`);
+
+      const user = await User.findById(userId);
+
+      await sendEmail({
+        to: user.email,
+        subject: "Payment Failed - GreenCart",
+        html: `
+          <div style="font-family:Arial,sans-serif;padding:20px;background:#fff3f3;border:1px solid #f5c2c2;border-radius:8px;">
+            <h2 style="color:#d32f2f;">Hello ${user.name},</h2>
+            <p>Your payment for order <strong>#${orderId}</strong> has <strong>failed</strong>.</p>
+            <p style="color:#444;">Reason: ${payment.error_description || "Unknown Error"}</p>
+            <p>You may retry the payment or contact support.</p>
+            <p style="margin-top:20px;">– <strong>GreenCart Team</strong></p>
+          </div>
+        `,
+      });
     }
+  } catch (err) {
+    console.error("❌ Error handling Razorpay webhook:", err.message);
   }
 
   res.json({ received: true });
 };
+
 
 // ✅ Get User Orders
 export const getUserOrders = async (req, res) => {
