@@ -61,7 +61,7 @@ const SellerLayout = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="flex items-center justify-between px-4 md:px-8 border-b border-gray-100 py-4 bg-white/80 backdrop-blur-md shadow-lg sticky top-0 z-30"
+        className="flex items-center justify-between px-4 md:px-8 border-b border-gray-100 py-4 bg-green-50 backdrop-blur-md shadow-lg sticky top-0 z-30"
       >
         <Link to="/">
           <img
@@ -76,7 +76,7 @@ const SellerLayout = () => {
           </p>
           <button
             onClick={logout}
-            className="border border-green-300 px-4 py-1.5 rounded-full bg-white hover:bg-primary/10 hover:text-primary hover:shadow-md transition duration-200"
+            className="border border-green-300 px-4 py-1.5 rounded-full bg-white hover:bg-green-400 hover:text-white hover:shadow-md transition duration-200"
           >
             Logout
           </button>
@@ -90,7 +90,7 @@ const SellerLayout = () => {
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="md:w-64 w-16 border-r h-[95vh] bg-white border-gray-200 shadow-md text-base pt-6 flex flex-col transition-all"
+          className="md:w-64 w-16 border-r h-[95vh] bg-gray-800 border-gray-200 shadow-md text-base pt-6 flex flex-col transition-all"
         >
           {sidebarLinks.map((item) => (
             <NavLink
@@ -102,7 +102,7 @@ const SellerLayout = () => {
                 ${
                   isActive
                     ? "border-r-4 md:border-r-[6px] bg-primary/10 border-primary text-primary"
-                    : "hover:bg-gray-50 hover:text-primary text-gray-600"
+                    : "hover:bg-green-100 hover:text-primary text-gray-100"
                 }`
               }
             >

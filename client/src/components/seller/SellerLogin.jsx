@@ -87,30 +87,46 @@ const SellerLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f0f9ff] via-white to-[#e8f3ff] text-sm text-gray-600 transition-all duration-300 font-[Outfit]">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="flex flex-col gap-6 items-start p-8 py-12 w-[90%] max-w-sm rounded-3xl shadow-2xl border border-gray-100 bg-white/80 glass-card shadow-glow backdrop-blur-xl animate-fade-in"
-      >
+      <div className="min-h-screen flex items-center justify-center bg-gray-800 text-white font-[Outfit]">
+      <div className="flex w-full max-w-4xl shadow-2xl rounded-2xl overflow-hidden">
+        {/* Left Welcome Panel */}
+        <div className="hidden md:flex bg-green-700 w-1/2 items-center justify-center px-10">
+<motion.h1
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7 }}
+  className="text-4xl text-6xl font-bold text-white text-center"
+>
+  {isLogin ? (
+    <>Welcome Back,<br />Seller</>
+  ) : (
+    <>Welcome to GreenCart,<br />Seller</>
+  )}
+</motion.h1>
 
-        {/* Heading */}
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={isLogin ? "login" : "signup"}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.4 }}
-            className="text-4xl font-extrabold m-auto text-center text-gray-800 mb-3 tracking-tight leading-tight"
-          >
-            <span className="text-primary drop-shadow">Seller</span>{" "}
-            {isLogin ? "Login" : "Signup"}
-          </motion.p>
-        </AnimatePresence>
+        </div>
 
-        <AnimatePresence mode="wait">
+        {/* Right Form Panel */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+          className="w-full md:w-1/2 bg-gray-900 p-8 md:p-14"
+        >
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={isLogin ? "login" : "signup"}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.4 }}
+              className="text-3xl font-bold text-green-500 mb-6 text-center"
+            >
+              {isLogin ? "Login" : "Signup"}
+            </motion.p>
+          </AnimatePresence>
+
+          {/* Login Form */}
           {isLogin ? (
             <motion.form
               key="login"
@@ -145,12 +161,13 @@ const SellerLogin = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={loading}
-                className="w-full py-3 bg-primary hover:bg-primary-dull text-white rounded-xl font-semibold uppercase tracking-wider transition duration-300 shadow-md hover:shadow-lg text-base"
+                className="w-full py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-semibold uppercase tracking-wider transition duration-300 shadow-md hover:shadow-lg text-base"
               >
                 {loading ? "Logging in..." : "LOGIN"}
               </motion.button>
             </motion.form>
           ) : (
+            /* Signup Form */
             <motion.form
               key="signup"
               onSubmit={handleSignup}
@@ -176,68 +193,61 @@ const SellerLogin = () => {
                 <input type="text" name="zip" placeholder="Zip Code" value={signupData.zip} onChange={(e) => setSignupData({ ...signupData, zip: e.target.value })} className="input-field" required />
                 <input type="text" name="country" placeholder="Country" value={signupData.country} onChange={(e) => setSignupData({ ...signupData, country: e.target.value })} className="input-field" required />
               </div>
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                disabled={loading}
-                className="w-full py-3 bg-primary hover:bg-primary-dull text-white rounded-xl font-semibold uppercase tracking-wider transition duration-300 shadow-md hover:shadow-lg text-base"
-              >
+              <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={loading} className="w-full py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-semibold uppercase tracking-wider transition duration-300 shadow-md hover:shadow-lg text-base">
                 {loading ? "Signing up..." : "Sign Up"}
               </motion.button>
             </motion.form>
           )}
-        </AnimatePresence>
 
-        {showVerification && (
-          <div className="w-full flex flex-col gap-3 mt-3">
-            <p className="text-sm text-center text-gray-700">Enter the verification code sent to your email</p>
-            <input
-              type="text"
-              placeholder="Enter code"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              className="input-field"
-            />
-            <motion.button
-              onClick={handleVerify}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-semibold uppercase tracking-wider transition duration-300 shadow-md hover:shadow-lg text-sm"
-            >
-              Verify Email
-            </motion.button>
-          </div>
-        )}
-
-        <p className="text-center w-full text-sm text-gray-600 mt-2">
-          {isLogin ? (
-            <>Don't have an account? <button onClick={() => setIsLogin(false)} className="text-green-600 font-medium hover:underline">Sign up</button></>
-          ) : (
-            <>Already have an account? <button onClick={() => setIsLogin(true)} className="text-green-600 font-medium hover:underline">Login</button></>
+          {/* Email Verification */}
+          {showVerification && (
+            <div className="w-full flex flex-col gap-3 mt-3">
+              <p className="text-sm text-center text-gray-300">Enter the verification code sent to your email</p>
+              <input type="text" placeholder="Enter code" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} className="input-field" />
+              <motion.button onClick={handleVerify} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-semibold uppercase tracking-wider transition duration-300 shadow-md hover:shadow-lg text-sm">
+                Verify Email
+              </motion.button>
+            </div>
           )}
-        </p>
 
-        <style>{`
-          .input-field {
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid #e5e7eb;
-            background-color: #fff;
-            font-size: 15px;
-            color: #1f2937;
-            outline: none;
-            transition: all 0.2s ease;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-          }
-          .input-field:focus {
-            border-color: #22c55e;
-            box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
-          }
-        `}</style>
-      </motion.div>
+          {/* Toggle Link */}
+          <p className="text-center w-full text-sm text-gray-300 mt-2">
+            {isLogin ? (
+              <>Don't have an account? <button onClick={() => setIsLogin(false)} className="text-green-400 font-medium hover:underline">Sign up</button></>
+            ) : (
+              <>Already have an account? <button onClick={() => setIsLogin(true)} className="text-green-400 font-medium hover:underline">Login</button></>
+            )}
+          </p>
+
+          {/* Styles */}
+         <style>{`
+        .input-field {
+          width: 100%;
+          padding: 12px 16px;
+          border-radius: 10px;
+          border: 1px solid #e5e7eb;
+          background-color: #fff;
+          font-size: 15px;
+          color: #1f2937;
+          transition: all 0.2s ease;
+          box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .dark .input-field {
+          background-color: #1f2937;
+          color: #f3f4f6;
+          border-color: #374151;
+        }
+        .input-field:focus {
+          border-color: #22c55e;
+          box-shadow: 0 0 0 3px rgba(34,197,94,0.25);
+          outline: none;
+        }
+      `}</style>
+        </motion.div>
+      </div>
     </div>
   );
 };
+
 
 export default SellerLogin;

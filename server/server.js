@@ -12,28 +12,35 @@ import productRouter from './routes/productRoute.js';
 import cartRouter from './routes/cartRoute.js';
 import addressRouter from './routes/addressRoute.js';
 import orderRouter from './routes/orderRoute.js';
+import adminRouter from './routes/adminRoute.js';
 import { razorpayWebhooks } from './controllers/orderController.js';
 
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ Razorpay Webhook Route – MUST come before express.json middleware
+// ✅ Razorpay Webhook Route – must be BEFORE express.json
 app.post('/razorpay/webhook', express.raw({ type: 'application/json' }), razorpayWebhooks);
 
 // ✅ CORS setup
-const allowedOrigins = [
-  'http://localhost:5173',
-  ''
-];
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+const allowedOrigins = ['http://localhost:5173'];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 // ✅ Cookie parser
 app.use(cookieParser());
 
-// ✅ JSON parser for non-stripe routes
+// ✅ JSON parser (skip raw route)
 app.use((req, res, next) => {
-  if (req.originalUrl === '/stripe') {
-    next(); // Do not parse JSON for stripe webhook
+  if (req.originalUrl === '/razorpay/webhook') {
+    next();
   } else {
     express.json()(req, res, next);
   }
@@ -49,6 +56,7 @@ app.use('/api/product', productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/address', addressRouter);
 app.use('/api/order', orderRouter);
+app.use('/api/admin', adminRouter);
 
 // ✅ Start server
 const startServer = async () => {

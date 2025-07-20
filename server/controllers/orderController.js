@@ -143,9 +143,16 @@ export const razorpayWebhooks = async (req, res) => {
 
       const orderId = paymentData.notes?.orderId;
       const userId = paymentData.notes?.userId;
+      console.log("[Razorpay Webhook] orderId:", orderId, "userId:", userId);
 
-      const order = await Order.findByIdAndUpdate(orderId, { isPaid: true }, { new: true });
+      const order = await Order.findByIdAndUpdate(orderId, { isPaid: true, orderStatus: "Paid" }, { new: true });
+      console.log("[Razorpay Webhook] Order update result:", order);
       await User.findByIdAndUpdate(userId, { cartItems: {} });
+
+      if (!order) {
+        console.error("[Razorpay Webhook] Order not found for orderId:", orderId);
+        return res.status(404).json({ received: false, error: "Order not found" });
+      }
 
       const user = await User.findById(userId);
       const totalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
